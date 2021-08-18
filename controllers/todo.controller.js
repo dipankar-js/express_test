@@ -16,3 +16,44 @@ const todos = [
 exports.getTodos = ((req, res) => {
     res.status(200).send({todos})
 })
+
+exports.saveTodo =((req, res) => {
+  const todo = req.body.todo;
+  todos.push(todo);
+  res.status(201).send({todos})
+})
+
+exports.updateTodo = ((req, res) => {
+  const id = req.params.id; // id = 3
+  const todoTitle = req.body.title;
+
+  // 1. identify the index of that todo
+  const updatedTodo = todos.find((todo) => todo.id === id)
+
+  const index = todos.indexOf(updatedTodo);
+
+  // 2. delete that todo
+  todos.splice(index, 1);
+
+  // 3. push the new tod
+  todos.push({
+      id: id,
+      title: todoTitle
+  })
+
+  res.status(201).send({todos});
+})
+
+exports.deleteTodo = ((req, res) => {
+  const id = req.params.id; // id = 3
+
+  // 1. identify the index of that todo
+  const updatedTodo = todos.find((todo) => todo.id === id)
+
+  const index = todos.indexOf(updatedTodo);
+
+  // 2. delete that todo
+  todos.splice(index, 1);
+
+  res.status(204).send({})
+})
